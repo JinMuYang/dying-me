@@ -1,0 +1,170 @@
+:root {
+    --cells-per-row: 48;
+    --cell-size: 12px;
+}
+
+body {
+    margin: 0 2rem;
+    overflow-x: clip;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.github-link svg {
+    display: block;
+}
+
+#layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+main {
+    flex: none;
+    min-width: 0;
+}
+
+#punchline-panel {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    container-type: inline-size;
+    font-weight: bold;
+    /* overflow-wrap: normal; */
+    opacity: 0.85;
+    text-transform: uppercase;
+    /* letter-spacing: 0.05em; */
+}
+
+#punchline {
+    font-size: clamp(3rem, 21cqi, 15rem);
+}
+
+.hidden {
+    display: none !important;
+}
+
+#share-container {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#legend {
+    margin-top: 1rem;
+    padding-left: 0;
+    list-style: none;
+}
+
+#graph {
+    display: grid;
+    grid-template-columns: repeat(var(--cells-per-row), var(--cell-size));
+    gap: 3px;
+}
+
+@keyframes cascadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.cell {
+    display: inline-block;
+    width: var(--cell-size);
+    aspect-ratio: 1;
+    border-radius: 2px;
+    position: relative;
+    opacity: 0;
+    /* Keep hidden until animation starts */
+    animation: cascadeIn 0.4s ease-out forwards;
+}
+
+.cell:hover {
+    outline: 1px solid #333;
+    filter: brightness(1.5);
+    /* box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.2); */
+}
+
+.lived-expected {
+    background-color: dimgrey;
+}
+
+.unlived-expected {
+    background-color: green;
+}
+
+.lived-unexpected {
+    background-color: yellow;
+}
+
+@media (max-width: 1050px) {
+    :root {
+        --cells-per-row: 36;
+        /* Fewer cells on smaller screens */
+    }
+}
+
+@media (max-width: 850px) {
+    #layout {
+        flex-direction: column;
+        /* Ensure users can scroll past the bottom rows of the graph */
+        padding-bottom: 120px;
+    }
+
+    #punchline-panel {
+        /* Pin the punchline to the viewport so it is impossible to miss */
+        top: auto;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+
+        /* Keep vertical padding, but shrink horizontal padding to maximize width */
+        padding: 1.5rem 2vw;
+        box-sizing: border-box;
+
+        /* Semi-transparent blur so the grid is visible underneath */
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        z-index: 10;
+
+        /* Force single line and fluidly fill the screen width */
+        white-space: nowrap;
+        text-align: center;
+        justify-content: center;
+        flex: unset;
+        margin: 0;
+    }
+
+    #punchline {
+        font-size: 5cqi;
+    }
+}
+
+@media (max-width: 600px) {
+    :root {
+        --cells-per-row: 24;
+        /* Even fewer cells on mobile devices */
+    }
+}
